@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import sys
 import traceback
 from functools import partial
@@ -71,6 +72,7 @@ def after_feature(ctx, feature):
 
 
 def before_scenario(ctx, scenario):
+    scenario.start_at = datetime.datetime.now()
     # we want every scenario to start with the exact same reinitialized config
     # values and not bleed values between scenario runs
     CONFIG.restore()
@@ -90,7 +92,6 @@ def before_scenario(ctx, scenario):
 
     # reset the step timer dictionary
     ctx.step_timers = {}
-    scenario.start_at = datetime.datetime.now().isoformat()[:-3]
 
     if config.CONFIG["CUCU_RESULTS_DIR"] is not None:
         ctx.scenario_dir = ctx.feature_dir / ellipsize_filename(scenario.name)
@@ -205,7 +206,7 @@ def after_scenario(ctx, scenario):
         CONFIG.to_yaml_without_secrets()
     )
 
-    scenario.end_at = datetime.datetime.now().isoformat()[:-3]
+    scenario.end_at = datetime.datetime.now()
 
 
 def download_mht_data(ctx):
@@ -237,7 +238,8 @@ def cleanup_browsers(ctx):
 
 
 def before_step(ctx, step):
-    step.start_at = datetime.datetime.now().isoformat()[:-3]
+    step.start_at = datetime.datetime.now()
+    step.end_at = None
 
     sys.stdout.captured()
     sys.stderr.captured()
@@ -272,12 +274,10 @@ def after_step(ctx, step):
     else:
         step.debug_output = ""
 
-    step.end_at = datetime.datetime.now().isoformat()[:-3]
+    step.end_at = datetime.datetime.now()
 
     # calculate duration from ISO timestamps
-    start_at = datetime.datetime.fromisoformat(step.start_at)
-    end_at = datetime.datetime.fromisoformat(step.end_at)
-    ctx.scenario.previous_step_duration = (end_at - start_at).total_seconds()
+    ctx.scenario.previous_step_duration = (step.end_at - step.start_at).total_seconds()
 
     # when set this means we're running in parallel mode using --workers and
     # we want to see progress reported using simply dots

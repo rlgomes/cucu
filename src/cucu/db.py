@@ -179,6 +179,11 @@ def record_feature(feature_obj):
 
 def record_scenario(scenario_obj):
     db.connect(reuse_if_open=True)
+
+    start_at = None
+    if getattr(scenario_obj, 'start_at', None):
+        start_at = scenario_obj.start_at.isoformat()
+
     scenario.create(
         scenario_run_id=scenario_obj.scenario_run_id,
         feature_run_id=scenario_obj.feature.feature_run_id,
@@ -186,7 +191,7 @@ def record_scenario(scenario_obj):
         line_number=scenario_obj.line,
         seq=scenario_obj.seq,
         tags=scenario_obj.tags,
-        start_at=getattr(scenario_obj, "start_at", None),
+        start_at=start_at,
     )
 
 
@@ -259,7 +264,7 @@ def finish_step_record(step_obj, duration):
         browser_logs=getattr(step_obj, "browser_logs", ""),
         debug_output=getattr(step_obj, "debug_output", ""),
         duration=duration,
-        end_at=getattr(step_obj, "end_at", None),
+        end_at=getattr(step_obj, 'end_at', None),
         error_message=error_message,
         exception=exception,
         has_substeps=getattr(step_obj, "has_substeps", False),
@@ -267,7 +272,7 @@ def finish_step_record(step_obj, duration):
         screenshots=screenshot_infos,
         section_level=getattr(step_obj, "section_level", None),
         seq=step_obj.seq,
-        start_at=getattr(step_obj, "start_at", None),
+        start_at=getattr(step_obj, 'start_at', None),
         status=step_obj.status.name,
         stderr=getattr(step_obj, "stderr", []),
         stdout=getattr(step_obj, "stdout", []),
@@ -276,14 +281,14 @@ def finish_step_record(step_obj, duration):
 
 def finish_scenario_record(scenario_obj):
     db.connect(reuse_if_open=True)
-    if getattr(scenario_obj, "start_at", None):
-        start_at = datetime.fromisoformat(scenario_obj.start_at)
-    else:
-        start_at = None
-    if getattr(scenario_obj, "end_at", None):
-        end_at = datetime.fromisoformat(scenario_obj.end_at)
-    else:
-        end_at = None
+    start_at = None
+    if getattr(scenario_obj, 'start_at', None):
+        start_at = scenario_obj.start_at
+
+    end_at = None
+    if getattr(scenario_obj, 'end_at', None):
+        end_at = scenario_obj.end_at
+
     if start_at and end_at:
         duration = (end_at - start_at).total_seconds()
     else:
