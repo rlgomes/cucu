@@ -11,7 +11,6 @@ from behave.textutil import make_indentation
 
 from cucu.config import CONFIG
 
-
 class CucuFormatter(Formatter):
     """ """
 
@@ -184,10 +183,10 @@ class CucuFormatter(Formatter):
         if step.status in (Status.passed, Status.failed):
             max_line_length = self.calculate_max_line_length()
             status_text = ""
+
             if self.show_timings:
-                start = step.start_at
                 duration = f"{step.duration:.3f}"
-                status_text += f" # started at {start} took {duration}s"
+                status_text += f" {duration}s"
 
             current_step_text = f"{step.keyword.rjust(5)} {step.name}"
             status_text_padding = (
