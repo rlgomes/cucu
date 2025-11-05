@@ -64,12 +64,12 @@ Feature: Run with hooks
       Hello
 
       .* DEBUG just logging some stuff from my after step hook
-          Given I echo "Hello" \s*# .*
+          Given I echo "Hello" .*
       .* DEBUG just logging some stuff from my before step hook
       World
 
       .* DEBUG just logging some stuff from my after step hook
-            And I echo "World" \s*# .*
+            And I echo "World" .*
       .* DEBUG No browsers - skipping MHT webpage snapshot
       .* DEBUG HOOK download_mht_data: passed ✅
       .* DEBUG just logging some stuff from my after scenario hook
@@ -125,8 +125,8 @@ Feature: Run with hooks
       [\s\S]*
 
         Scenario: This is a scenario that runs after this scenario hooks in LIFO order
-          Given I run the following steps after the current scenario-1     # .*
-            And I run the following steps after the current scenario-2     # .*
+          Given I run the following steps after the current scenario-1  .*
+            And I run the following steps after the current scenario-2  .*
       .* DEBUG No browsers - skipping MHT webpage snapshot
       .* DEBUG HOOK download_mht_data: passed ✅
       .* DEBUG just logging some stuff from second_after_this_scenario_hook_2
