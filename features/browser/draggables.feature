@@ -8,16 +8,16 @@ Feature: Draggables
 
   Scenario: User can drag element
      When I wait to see the text "Drag"
-     Then I should immediately see the "2nd" element "Drag Me" is draggable
+     Then I should see the "2nd" element "Drag Me" is draggable
       And I drag the element "Drag Me 1" to the element "Drop Here 2"
       And I drag the element "Drag Me 2" to the element "Drop Here 1"
       And I drag the element "Drag Me 3" to the element "Drop Here 3"
-      And I should immediately see the "2nd" element "Drop Here" is not draggable
+      And I should see the "2nd" element "Drop Here" is not draggable
 
   @negative
   Scenario: User cannot drag element
      When I wait to see the text "Drag"
-     Then I should immediately see the element "Drop Here 2" is not draggable
+     Then I should see the element "Drop Here 2" is not draggable
       And I expect the following step to fail with "Unable to find the element \"Nonexistent drop\""
      """
       When I drag the element "Drag Me 1" to the element "Nonexistent drop"
