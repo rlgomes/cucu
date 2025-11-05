@@ -49,42 +49,43 @@ def run_script(
     exit_code_var=None,
     check_exit_code=None,
 ):
-    script_fd, script_filename = tempfile.mkstemp()
-    os.close(script_fd)
-    atexit.register(os.remove, script_filename)
+    with tempfile.TemporaryDirectory(delete=False) as tmpdirname:
+        script_filename = os.path.join(tmpdirname, "run_script.sh")
 
-    with open(script_filename, "wb") as script_file:
-        script_file.write(script.encode())
+        with open(script_filename, "wb") as script_file:
+            script_file.write(script.encode())
 
-    os.chmod(script_filename, 0o755)
-    process = subprocess.run(
-        [script_file.name],
-        capture_output=True,
-        shell=True,
-    )  # nosec
+        #atexit.register(os.remove, script_filename)
 
-    if exit_code_var:
-        config.CONFIG[exit_code_var] = str(process.returncode)
+        os.chmod(script_filename, 0o755)
+        process = subprocess.run(
+            [script_file.name],
+            capture_output=True,
+            shell=True,
+        )  # nosec
 
-    stdout = process.stdout.decode("utf8")
-    stderr = process.stderr.decode("utf8")
+        if exit_code_var:
+            config.CONFIG[exit_code_var] = str(process.returncode)
 
-    if stdout_var:
-        config.CONFIG[stdout_var] = config.CONFIG.escape(stdout)
+        stdout = process.stdout.decode("utf8")
+        stderr = process.stderr.decode("utf8")
 
-    if stderr_var:
-        config.CONFIG[stderr_var] = config.CONFIG.escape(stderr)
+        if stdout_var:
+            config.CONFIG[stdout_var] = config.CONFIG.escape(stdout)
 
-    return_code = process.returncode
-    if check_exit_code is not None and int(check_exit_code) != return_code:
-        logger.error(f"STDOUT:\n{stdout}\n")
-        logger.error(f"STDERR:\n{stderr}\n")
-        raise RuntimeError(
-            f"expected exit code {check_exit_code}, got {return_code}, see above for details"
-        )
-    else:
-        logger.debug(f"STDOUT:\n{stdout}\n")
-        logger.debug(f"STDERR:\n{stderr}\n")
+        if stderr_var:
+            config.CONFIG[stderr_var] = config.CONFIG.escape(stderr)
+
+        return_code = process.returncode
+        if check_exit_code is not None and int(check_exit_code) != return_code:
+            logger.error(f"STDOUT:\n{stdout}\n")
+            logger.error(f"STDERR:\n{stderr}\n")
+            raise RuntimeError(
+                f"expected exit code {check_exit_code}, got {return_code}, see above for details"
+            )
+        else:
+            logger.debug(f"STDOUT:\n{stdout}\n")
+            logger.debug(f"STDERR:\n{stderr}\n")
 
 
 @step(
