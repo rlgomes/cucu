@@ -1,6 +1,7 @@
 import os
 import re
 import subprocess
+import sys
 import time
 
 from cucu import logger, retry, run_steps, step
@@ -136,7 +137,10 @@ def stop_the_timer(ctx, name):
 
 def run_feature(ctx, filepath, results):
     command = f"cucu run {filepath} --results {results}"
-    process = subprocess.run(command, shell=True)  # nosec
+    process = subprocess.run(command,
+                             stdout=sys.stdout,
+                             stderr=sys.stderr,
+                             shell=True)
 
     return_code = process.returncode
     if return_code != 0:
