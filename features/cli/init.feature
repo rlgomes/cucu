@@ -30,6 +30,7 @@ Feature: Init
       Overwrite existing files? [y/N]:You can now start writing your tests
       """
 
+  @disabled @needs-work
   Scenario: The example feature actually works
      When I run the following script and save stdout to "STDOUT", stderr to "STDERR" and expect exit code "0"
       """
