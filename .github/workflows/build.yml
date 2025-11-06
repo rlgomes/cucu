@@ -49,13 +49,6 @@ jobs:
       with:
         name: unit-tests
         path: output.tgz
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@3a74b2957438d0b6e2e61d67b05318aa25c9e6c6 # v2
-      if: always()
-      with:
-        check_name: "unit results"
-        files: |
-          output/unit-tests.xml
 
   cucu:
     needs: unit
@@ -63,11 +56,6 @@ jobs:
     strategy:
       matrix:
         browser: ["chrome", "firefox", "edge"]
-    permissions:  # to publish junit results - see https://github.com/EnricoMi/publish-unit-test-result-action?tab=readme-ov-file#permissions
-      contents: read
-      issues: read
-      checks: write
-      pull-requests: write
     services:
       webserver:
         image: selenium/standalone-${{ matrix.browser }}:125.0
@@ -117,10 +105,3 @@ jobs:
       with:
         name: ${{ matrix.browser }}-tests
         path: output.tgz
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@3a74b2957438d0b6e2e61d67b05318aa25c9e6c6 # v2
-      if: always()
-      with:
-        check_name: "${{ matrix.browser }} results"
-        files: |
-          output/junit/**/*.xml
