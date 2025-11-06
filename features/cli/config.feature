@@ -67,15 +67,15 @@ Feature: Config
          Scenario: This scenario prints a bunch of variables
        bar
 
-           Given I echo "\{FOO\}" \s*# .*
+           Given I echo "\{FOO\}" .*
            # FOO="bar"
        booze
 
-             And I echo "\{FIZZ\}" \s*# .*
+             And I echo "\{FIZZ\}" .*
              # FIZZ="booze"
        buzz
 
-             And I echo "\{BUZZ\}" \s*# .*
+             And I echo "\{BUZZ\}" .*
              # BUZZ="buzz"
 
        1 feature passed, 0 failed, 0 skipped
