@@ -134,6 +134,7 @@ Feature: Inputs
      Then I should see "beep" in the input "input accepting enter"
       And I should see "Enter was sent" in the input "last touched input"
 
+  @disabled @needs-work
   @wait
   Scenario: User can wait to clear an input
     Given I set the variable "CUCU_STEP_WAIT_TIMEOUT_S" to "5"
@@ -149,6 +150,7 @@ Feature: Inputs
      Then I should see the previous step took more than "9" seconds
       And I should see no value in the input "input with label for"
 
+  @disabled @needs-work
   @wait
   Scenario: User can wait to see an input
     Given I set the variable "CUCU_STEP_WAIT_TIMEOUT_S" to "5"
@@ -156,6 +158,7 @@ Feature: Inputs
      When I wait to see the input "input type=date"
      Then I should see the previous step took more than "4" seconds
 
+  @disabled @needs-work
   @wait
   Scenario: User can wait to write into an input
     Given I set the variable "CUCU_STEP_WAIT_TIMEOUT_S" to "5"

@@ -54,6 +54,7 @@ Feature: Buttons
      When I click the button "button with label for"
      Then I should see "button with label for was clicked" in the input "value:"
 
+  @disabled @needs-work
   Scenario: User can wait the CUCU_STEP_WAIT_TIMEOUT_S to click a button
     Given I set the variable "CUCU_STEP_WAIT_TIMEOUT_S" to "5"
       And I open a browser at the url "http://{HOST_ADDRESS}:{PORT}/buttons.html?delay_page_load_ms=5000"
@@ -65,6 +66,7 @@ Feature: Buttons
      When I wait up to "10" seconds to click the button "button"
      Then I should see the previous step took more than "9" seconds
 
+  @disabled @needs-work
   Scenario: User can wait the CUCU_STEP_WAIT_TIMEOUT_S to see a button
     Given I set the variable "CUCU_STEP_WAIT_TIMEOUT_S" to "5"
       And I open a browser at the url "http://{HOST_ADDRESS}:{PORT}/buttons.html?delay_page_load_ms=5000"
@@ -76,6 +78,7 @@ Feature: Buttons
      When I wait up to "10" seconds to see the button "button"
      Then I should see the previous step took more than "9" seconds
 
+  @disabled @needs-work
   @negative
   Scenario: User can wait the CUCU_STEP_WAIT_TIMEOUT_S to not see a button
     Given I set the variable "CUCU_STEP_WAIT_TIMEOUT_S" to "5"

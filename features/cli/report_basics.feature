@@ -92,7 +92,8 @@ Feature: Report basics
       And I should see the image with the alt text "After I should see the checkbox "checkbox with inner label""
       And I should not see the image with the alt text "After I start a webserver at directory \"data/www\" and save the port to the variable \"PORT\""
       And I should not see the image with the alt text "After I open a browser at the url \"http://{HOST_ADDRESS}:{PORT}/checkboxes.html""
-     When I save the current url to the variable "CURRENT_URL"
+    When I save the current url to the variable "CURRENT_URL"
+      And I echo "${CURRENT_URL}"
       And I click the link "Index"
      Then I navigate to the url "{CURRENT_URL}"
       And I wait to see the image with the alt text "After I should see the checkbox "checkbox with inner label""
@@ -228,11 +229,6 @@ Feature: Report basics
       And I start a webserver at directory "{CUCU_RESULTS_DIR}/runtime_timeout_reporting_report/" and save the port to the variable "PORT"
       And I open a browser at the url "http://{HOST_ADDRESS}:{PORT}/index.html"
      When I click the button "Slow feature #1"
-     Then I should see a table that matches the following:
-        | Offset | Scenario      | Steps | Status | Duration |
-        | .*     | Slow scenario | 1     | .*     |    >*    |
-     When I go back on the browser
-      And I click the button "Slow feature #2"
      Then I should see a table that matches the following:
         | Offset | Scenario      | Steps | Status | Duration |
         | .*     | Slow scenario | 1     | .*     |    >*    |

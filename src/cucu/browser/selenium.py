@@ -37,8 +37,12 @@ def init():
             logging.debug("unable to auto install chromedriver")
 
     if config.CONFIG["CUCU_BROWSER"] == "firefox":
-        # https://github.com/mozilla/geckodriver/issues/330
-        logger.warning("browser console logs not available on firefox")
+
+        if config.CONFIG["__BROWSER_CONSOLE_LOGS_ON_FIREFOX_LOGGED"] == True:
+            # https://github.com/mozilla/geckodriver/issues/330
+            logger.warning("browser console logs not available on firefox")
+            config.CONFIG["__BROWSER_CONSOLE_LOGS_ON_FIREFOX_LOGGED"] = True
+
         geckodriver_autoinstaller.install()
 
     if config.CONFIG["CUCU_BROWSER"] == "edge":

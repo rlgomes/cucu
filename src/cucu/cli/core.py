@@ -363,16 +363,12 @@ def run(
                 feature_filepaths = [filepath]
 
             if sys.platform == "darwin":
-                logger.info(
-                    "MAC OS detected, using 'forkserver' start method since 'fork' is unstable"
-                )
+                logger.debug("MAC OS detected, using 'forkserver' start method since 'fork' is unstable")
                 start_method = "forkserver"
             else:
                 start_method = "fork"
 
-            with WorkerPool(
-                n_jobs=int(workers), start_method=start_method
-            ) as pool:
+            with WorkerPool(n_jobs=int(workers), start_method=start_method) as pool:
                 # Each feature file is applied to the pool as an async task.
                 # It then polls the async result of each task. It the result
                 # is ready, it removes the result from the list of results that
@@ -406,9 +402,8 @@ def run(
                             pass
 
                 def handle_kill_signal(signum, frame):
-                    signal.signal(
-                        signum, signal.SIG_IGN
-                    )  # ignore additional signals
+                    # ignore additional signals
+                    signal.signal(signum, signal.SIG_IGN)
                     logger.warning(
                         f"received signal {signum}, sending kill signal to workers"
                     )
