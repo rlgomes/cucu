@@ -3,8 +3,7 @@ name: build
 # TODO: Figure out and prevent firefox and edge tests getting auto-cancelled (out of memory?)
 # TODO: Combine coverage reports in another job
 
-on:
-  workflow_dispatch:
+on: [push]
 
 jobs:
   lint:
@@ -83,7 +82,7 @@ jobs:
       run: curl --retry 60 --retry-delay 2 --retry-connrefused http://localhost:4444
     - name: UI tests
       run: |
-        uv run cucu run features --browser "${{ matrix.browser }}" --workers 1 --generate-report --report output/report --junit output/junit --selenium-remote-url http://localhost:4444
+        uv run cucu run features --browser "${{ matrix.browser }}" --workers 4 --generate-report --report output/report --junit output/junit --selenium-remote-url http://localhost:4444
       env:
         COVERAGE_PROCESS_START: pyproject.toml
         SE_NODE_MAX_SESSIONS: 12
